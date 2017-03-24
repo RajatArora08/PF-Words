@@ -15,21 +15,34 @@ pattern_end_doc = re.compile(r'^\{END}')
 pattern_pubmedid = re.compile(r'PubMed=([0-9]*)')
 pattern_parsed_doc_id = re.compile(r'^[0-9]*_([A-Za-z0-9_]*)')
 
+solr = pysolr.Solr(CONSTANTS.SOLR_URL, timeout=10)
 
-def add_solr(data):
-    solr = pysolr.Solr(CONSTANTS.SOLR_URL, timeout=10)
 
+def add_solr_description(data):
     output_file = open(CONSTANTS.PARSED_FILE, "a")
 
     solr.add([data])
     output_file.write("*********** {0} ************\n".format(data["id"]))
     output_file.write("{0}\n\n".format(data["description"]))
 
+    if data.__contains__('mesh_terms'):
+        output_file.write("Mesh Terms: {0}\n\n".format(data["mesh_terms"]))
+
+    # Add here to write mesh terms to file
+
     output_file.close()
 
     print("{0} {1}".format(data["id"], data["description"]))
 
+
     return
+
+
+# def add_solr_mesh_list(data):
+#
+#     solr.add()
+#
+#     return
 
 
 def main():
@@ -96,16 +109,27 @@ def main():
                     for doc_id_tmp in doc_list_with_same_doc:
                         data = {"id": doc_id_tmp, "description": description}
 
-                        add_solr(data)
+                        add_solr_description(data)
 
-                        for pubmed_abtract in PubMed.fetch_pubmed_abstract(pubmed_list):
+                        # Fetch all pubmed articles for each PF-Word
+                        pubmed_data = PubMed.fetch_pubmed_abstract(pubmed_list)
+
+                        for pubmed in pubmed_data:
                             PF_word = re.findall(pattern_parsed_doc_id, doc_id_tmp)[0]
 
-                            data = {"id": "{0}_{1}".format(doc_id, PF_word),
-                                    "description": pubmed_abtract}
+                            data["id"] = "{0}_{1}".format(doc_id, PF_word)
+
+                            if pubmed.__contains__('abstract'):
+                                data["description"] = pubmed['abstract']
+
+                            if pubmed.__contains__('mesh_terms'):
+                                data["mesh_terms"] = pubmed['mesh_terms']
+
                             doc_id += 1
 
-                            add_solr(data)
+                            add_solr_description(data)
+
+
 
             # doc_list_with_same_doc.clear()
 

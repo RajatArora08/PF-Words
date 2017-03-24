@@ -5,7 +5,7 @@ from CONSTANTS import PUBMED_URL
 
 def fetch_pubmed_abstract(PubMedId_list):
 
-    abstract_list = []
+    ret_value = []
 
     url = PUBMED_URL.format(",".join(PubMedId_list))
     response = requests.get(url)
@@ -14,12 +14,26 @@ def fetch_pubmed_abstract(PubMedId_list):
 
     for child in root:
 
-        abstract = child \
-            .find('MedlineCitation') \
-            .find('Article') \
+        temp = {}
+
+        medical_citation = child.find('MedlineCitation')
+
+        abstract = medical_citation.find('Article') \
             .find('Abstract')
 
-        if abstract:
-            abstract_list.append(abstract.find('AbstractText').text)
+        mesh_headings = medical_citation.find('MeshHeadingList')
 
-    return abstract_list
+        if abstract:
+            temp['abstract'] = abstract.find('AbstractText').text
+
+            if mesh_headings :
+                mesh_terms_list = []
+
+                for mesh_term in mesh_headings.findall('MeshHeading'):
+                    mesh_terms_list.append(mesh_term.find('DescriptorName').text)
+
+                temp['mesh_terms'] = ", ".join(mesh_terms_list)
+
+            ret_value.append(temp)
+
+    return ret_value
