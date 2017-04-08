@@ -1,8 +1,8 @@
 from PF_To_Be_Tested import PF_List
 import re
-import pysolr
 import CONSTANTS
 import PubMed
+import SolrOperations
 
 
 pattern_PF_name = re.compile(r'^\{[A-Za-z0-9]*; ([A-Za-z0-9_]*)\}\n$')
@@ -13,132 +13,77 @@ pattern_skip_line = re.compile(r'^\*')
 pattern_end_description = re.compile(r'^-Consensus pattern')
 pattern_end_doc = re.compile(r'^\{END}')
 pattern_pubmedid = re.compile(r'PubMed=([0-9]*)')
-pattern_parsed_doc_id = re.compile(r'^[0-9]*_([A-Za-z0-9_]*)')
-
-solr = pysolr.Solr(CONSTANTS.SOLR_URL, timeout=10)
 
 
-def add_solr_description(data):
-    output_file = open(CONSTANTS.PARSED_FILE, "a")
-
-    solr.add([data])
-    output_file.write("*********** {0} ************\n".format(data["id"]))
-    output_file.write("{0}\n\n".format(data["description"]))
-
-    if data.__contains__('mesh_terms'):
-        output_file.write("Mesh Terms: {0}\n\n".format(data["mesh_terms"]))
-
-    # Add here to write mesh terms to file
-
-    output_file.close()
-
-    print("{0} {1}".format(data["id"], data["description"]))
-
-
-    return
-
-
-# def add_solr_mesh_list(data):
-#
-#     solr.add()
-#
-#     return
-
-
-def main():
-    doc_id = 1
+def create_core_docs(doc_id):
 
     with open(CONSTANTS.PROSITE_FILE, "r", encoding="ISO-8859-1") as file:
         for line in file:
 
-            #Testing
-            if line == '{PS00107; PROTEIN_KINASE_ATP}\n':
-                print('Here')
-
             if re.match(pattern_PF_name, line):
-                term = re.findall(pattern_PF_name, line)
+                word = re.findall(pattern_PF_name, line)[0]
 
-                if any(term[0] == word for word in PF_List):
-                    doc_list_with_same_doc = []
-                    doc_list_with_same_doc.append('{0}_{1}'.format(doc_id, term[0]))
-                    doc_id += 1
+                if any(word == pf_word for pf_word in PF_List):
 
-                    description = ''
-                    pubmed_list = []
+                    # Testing only for 'EF_HAND_1'
+                    if word == 'EF_HAND_1':
+                        pf_word_list = []
+                        pf_word_list.append(word)
 
-                    for line_further in file:
+                        description = ''
+                        pubmed_list = []
 
-                        #For PF sharing same doc
-                        if re.match(pattern_PF_name, line_further):
-                            term_further = re.findall(pattern_PF_name, line_further)
-                            if any(term_further[0] == word for word in PF_List):
-                                doc_list_with_same_doc.append('{0}_{1}'.format(doc_id, term_further[0]))
-                                doc_id += 1
+                        for line_further in file:
+
+                            #For PF sharing same doc
+                            if re.match(pattern_PF_name, line_further):
+                                term_further = re.findall(pattern_PF_name, line_further)
+                                if any(term_further[0] == word for word in PF_List):
+                                    pf_word_list.append(term_further[0])
+                                    continue
+
+                            #For '{BEGIN}'
+                            elif re.match(pattern_start_description, line_further):
+                                doc_contents = ''
                                 continue
 
-                        #For '{BEGIN}'
-                        elif re.match(pattern_start_description, line_further):
-                            doc_contents = ''
-                            continue
+                            #For any text starting with '*'
+                            elif re.match(pattern_skip_line, line_further):
+                                continue
 
-                        #For any text starting with '*'
-                        elif re.match(pattern_skip_line, line_further):
-                            continue
+                            #For '-Consensus pattern'
+                            elif re.match(pattern_end_description, line_further):
+                                description = doc_contents
+                                continue
 
-                        #For '-Consensus pattern'
-                        elif re.match(pattern_end_description, line_further):
-                            description = doc_contents
-                            continue
+                            #For '{END}'
+                            elif re.match(pattern_end_doc, line_further):
+                                break
 
-                        #For '{END}'
-                        elif re.match(pattern_end_doc, line_further):
-                            break
+                            #For pubmedid in references
+                            elif re.search(pattern_pubmedid, line_further):
+                                pubmed_list.append(re.findall(pattern_pubmedid, line_further)[0])
+                                continue
 
-                        #For pubmedid in references
-                        elif re.search(pattern_pubmedid, line_further):
-                            pubmed_list.append(re.findall(pattern_pubmedid, line_further)[0])
-                            continue
+                            else:
+                                doc_contents += line_further
 
-                        #Testing
-                        elif line_further == '-Last update: April 2006 / Pattern revised.\n':
-                            print('hold')
+                        for temp_word in pf_word_list:
 
-                        else:
-                            doc_contents += line_further
+                            formatted_word = CONSTANTS.DOC_FORMAT.format(doc_id, temp_word)
 
-                    for doc_id_tmp in doc_list_with_same_doc:
-                        data = {"id": doc_id_tmp, "description": description}
-
-                        add_solr_description(data)
-
-                        # Fetch all pubmed articles for each PF-Word
-                        pubmed_data = PubMed.fetch_pubmed_abstract(pubmed_list)
-
-                        for pubmed in pubmed_data:
-                            PF_word = re.findall(pattern_parsed_doc_id, doc_id_tmp)[0]
-
-                            data["id"] = "{0}_{1}".format(doc_id, PF_word)
-
-                            if pubmed.__contains__('abstract'):
-                                data["description"] = pubmed['abstract']
-
-                            if pubmed.__contains__('mesh_terms'):
-                                data["mesh_terms"] = pubmed['mesh_terms']
-
+                            data = {"id": formatted_word, "description": description}
                             doc_id += 1
 
-                            add_solr_description(data)
+                            SolrOperations.add_to_solr(data)
 
-
-
-            # doc_list_with_same_doc.clear()
-
-                # break
-
-                # print(re.match(pattern_PF_name, line))
-                # print(re.findall(pattern_PF_ID, line))
+                            doc_id = PubMed.add_pubmed_to_solr(temp_word, pubmed_list, doc_id)
 
     file.close()
+    return doc_id
 
 
-main()
+if __name__ == '__main__':
+
+    initial_doc_id = 1
+    create_core_docs(initial_doc_id)

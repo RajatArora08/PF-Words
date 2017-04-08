@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PF-Words Search</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheets/style.css') }}">
+</head>
+<body>
+<h1>PF-Words Search Engine</h1>
+    <form class="form-wrapper cf" method="get" action="prosite" id="search-form">
+        <input type="text" name="query" placeholder="Search here..." required class="input-form">
+
+        <button type="submit">Search</button>
+
+        <div class="byline">
+            <p>1. Total</p><input type="radio" name="option" value="1" required>
+            <p>2. Log10</p><input type="radio" name="option" value="2">
+            <p>3. Count</p><input type="radio" name="option" value="3">
+            <p>4. Relevancy</p><input type="radio" name="option" value="4">
+        </div>
+
+    </form>
+
+    <div class="byline">
+        <p id="output">Output: </p>
+    </div>
+
+</body>
+</html>
