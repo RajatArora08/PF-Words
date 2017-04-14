@@ -1,7 +1,7 @@
 {
   "responseHeader":{
     "status":0,
-    "QTime":0},
+    "QTime":1},
   "schema":{
     "name":"example-data-driven-schema",
     "version":1.6,
@@ -979,6 +979,18 @@
         "name":"mesh_terms",
         "type":"text_en",
         "indexed":true,
+        "stored":true},
+      {
+        "name":"source",
+        "type":"text_en",
+        "multiValued":false,
+        "indexed":false,
+        "stored":true},
+      {
+        "name":"title",
+        "type":"text_en",
+        "multiValued":false,
+        "indexed":true,
         "stored":true}],
     "dynamicFields":[{
         "name":"*_txt_en_split_tight",
@@ -1353,4 +1365,7 @@
         "dest":"_text_"},
       {
         "source":"mesh_terms",
+        "dest":"_text_"},
+      {
+        "source":"title",
         "dest":"_text_"}]}}

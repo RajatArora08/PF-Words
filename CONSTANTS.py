@@ -9,16 +9,26 @@ PARSED_FILE = "/home/rajatar08/PF-Project/parsed.txt"
 PUBMED_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" \
              "db=pubmed" \
              "&retmode=xml" \
-             "&tool=my_tool" \
-             "&email=my_email@example.com" \
+             "&tool=pf_words" \
+             "&email=rarora@mail.sfsu.edu" \
              "&id={0}"
 
 PDB_URL = "http://www.rcsb.org/pdb/rest/describePDB?structureId={0}"
 
 UNIPROT_URL = "http://www.uniprot.org/uniprot/{0}.txt"
 
-SOLR_URL = 'http://localhost:8983/solr/PF-WORDS'
+SOLR_URL_TEST = 'http://localhost:8983/solr/PF-WORDS'
+SOLR_URL_CORE = 'http://localhost:8983/solr/PF-Core'
+SOLR_URL_ALL = 'http://localhost:8983/solr/PF-All'
 
 NO_OF_ROWS = '100'
 
 DOC_FORMAT = "{0}_{1}"
+
+headers = {'User-Agent': 'rarora@mail.sfsu.edu'}
+
+PDB_DIR = "/home/rajatar08/PF-Project/resources/pdb/{0}.xml"
+
+UNIPROT_DIR = "/home/rajatar08/PF-Project/resources/uniprot/{0}.txt"
+
+PUBMED_DIR = "/home/rajatar08/PF-Project/resources/pubmed/{0}.xml"

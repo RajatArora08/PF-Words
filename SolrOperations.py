@@ -3,7 +3,7 @@ import CONSTANTS
 
 
 def add_to_solr(data):
-    solr = pysolr.Solr(CONSTANTS.SOLR_URL, timeout=10)
+    solr = pysolr.Solr(CONSTANTS.SOLR_URL_TEST, timeout=10)
 
     output_file = open(CONSTANTS.PARSED_FILE, "a")
 
