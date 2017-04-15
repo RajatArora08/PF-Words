@@ -43,7 +43,7 @@ def fetch_pubmed_abstract(PubMedId_list):
 
             for child in root:
                 data = parse_xml(child)
-                if data.__contains__('abstract'):
+                if data.__contains__('title'):
                     pubmed_abstracts.append(data)
 
                 # Write to xml file

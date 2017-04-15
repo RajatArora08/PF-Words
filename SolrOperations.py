@@ -2,13 +2,11 @@ import pysolr
 import CONSTANTS
 
 
-def add_to_solr(data):
+def add_to_solr(data, Core=False):
     solr = pysolr.Solr(CONSTANTS.SOLR_URL_TEST, timeout=10)
 
     output_file = open(CONSTANTS.PARSED_FILE, "a")
 
-    if data["id"] == '7_EF_HAND_1':
-        print("stop")
     solr.add([data])
 
     # Write all solr contents to file too
@@ -23,6 +21,12 @@ def add_to_solr(data):
     # output_file.close()
 
     # print("{0} {1}".format(data["id"], data["description"]))
+
     print("{0}".format(data["id"]))
+
+    if Core:
+        solr_core = pysolr.Solr(CONSTANTS.SOLR_URL_CORE, timeout=10)
+        solr_core.add([data])
+        print("Added to Core Docs")
 
     return

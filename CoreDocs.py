@@ -27,7 +27,7 @@ def create_core_docs():
                 if any(word == pf_word for pf_word in PF_List):
 
                     # Testing only for 'EF_HAND_1'
-                    if word == 'EF_HAND_1':
+                    # if word == 'EF_HAND_1':
 
                         pubmed_set = set()
                         pf_word_list = []
@@ -93,7 +93,7 @@ def create_core_docs():
 
                             variables.DOC_ID += 1
 
-                            SolrOperations.add_to_solr(data)
+                            SolrOperations.add_to_solr(data, Core=True)
 
     file.close()
     return
@@ -102,4 +102,4 @@ def create_core_docs():
 if __name__ == '__main__':
 
     create_core_docs()
-    PubMed.add_pubmed_to_solr()
+    # PubMed.add_pubmed_to_solr()
