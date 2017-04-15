@@ -5,7 +5,7 @@ import SecondaryScoring
 
 def search(query, scoring_method):
 
-    solr = pysolr.Solr(CONSTANTS.SOLR_URL, timeout=10)
+    solr = pysolr.Solr(CONSTANTS.SOLR_URL_TEST, timeout=10)
 
     # query = input('Enter query: ')
 

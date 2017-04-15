@@ -46,7 +46,7 @@ def get_pdb_uniprot_list(input_file):
 
             uniprot_list.extend([tuple_uniprot[0] for tuple_uniprot in uniprot
                                  if tuple_uniprot[1] == 'T' or tuple_uniprot == 'N'])
-
+    
         # '3D' line= PDB.
         if re.match(pattern_3d_line, line):
             pdb_list.extend(re.findall(pattern_pdb_list, line))

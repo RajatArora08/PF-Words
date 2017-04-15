@@ -9,7 +9,7 @@ def static_page(page_name):
     return render_template('%s.html' % page_name)
 
 
-@app.route('/index/prosite')
+@app.route('/test/prosite')
 def return_search():
     query = request.args['query']
     option = request.args['option']

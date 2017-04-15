@@ -15,11 +15,6 @@ def fetch_pubmed_abstract(PubMedId_list):
 
     for pubmed_id in PubMedId_list:
 
-        print(pubmed_id)
-
-        if pubmed_id == '16094673':
-            print('pause')
-
         # Check if file is present in local
         file = Path(PUBMED_DIR.format(pubmed_id))
 
@@ -102,10 +97,19 @@ def parse_xml(child):
 def add_pubmed_to_solr():
     # pattern_parsed_doc_id = re.compile(r'^[0-9]*_([A-Za-z0-9_]*)')
 
+    test_list = []
+    test_set = set()
+
     for pf_word in variables.PubMedId:
 
         # Fetch all pubmed articles for each PF-Word
         pubmed_data = fetch_pubmed_abstract(variables.PubMedId[pf_word])
+
+        #Testing
+        for foo in pubmed_data:
+            test_list.append(foo['id'])
+
+        test_set = set(test_list)
 
         for pubmed in pubmed_data:
             # PF_word = re.findall(pattern_parsed_doc_id, pf_word)[0]

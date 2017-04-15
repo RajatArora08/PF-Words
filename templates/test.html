@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Literature powered PF-Word Search Engine</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<style type="text/css">-->
+        <!--#custom-search-input {-->
+        <!--margin:0;-->
+        <!--margin-top: 10px;-->
+        <!--padding: 0;-->
+    <!--}-->
+
+    <!--#custom-search-input .search-query {-->
+        <!--padding-right: 3px;-->
+        <!--padding-right: 4px \9;-->
+        <!--padding-left: 3px;-->
+        <!--padding-left: 4px \9;-->
+        <!--/* IE7-8 doesn't have border-radius, so don't indent the padding */-->
+
+        <!--margin-bottom: 0;-->
+        <!-- -webkit-border-radius: 3px;-->
+        <!-- -moz-border-radius: 3px;-->
+        <!--border-radius: 3px;-->
+    <!--}-->
+
+    <!--#custom-search-input button {-->
+        <!--border: 0;-->
+        <!--background: none;-->
+        <!--/** belows styles are working good */-->
+        <!--padding: 2px 5px;-->
+        <!--margin-top: 2px;-->
+        <!--position: relative;-->
+        <!--left: -28px;-->
+        <!--/* IE7-8 doesn't have border-radius, so don't indent the padding */-->
+        <!--margin-bottom: 0;-->
+        <!-- -webkit-border-radius: 3px;-->
+        <!-- -moz-border-radius: 3px;-->
+        <!--border-radius: 3px;-->
+        <!--color:#D9230F;-->
+    <!--}-->
+
+    <!--.search-query:focus + button {-->
+        <!--z-index: 3;-->
+    <!--}-->
+
+    <!--</style>-->
+</head>
+<body>
+    <div class="container">
+        <div class="row" style="align-items: center">
+            <div class="col-md-12" align="center">
+                <h2>Literature powered PF-Word Search Engine</h2>
+            </div>
+        </div>
+        <form method="get" action="prosite" id="search-form">
+        <div class="row">
+            <div class="col-md-12">
+                    <input type="text" class="form-control" placeholder="Search" name="query" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="option" value="1" checked>
+                        1. Total scoring
+                    </label>
+                    <label>
+                        <input type="radio" name="option" value="3">
+                        2. Count scoring
+                    </label>
+                    <label>
+                        <input type="radio" name="option" value="4">
+                        3. Count scoring
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-success" type="submit">Search!!</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</body>
+</html>
