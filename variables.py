@@ -1,6 +1,7 @@
-DOC_ID = 1
+DOC_ID = 9235
 
 PubMedId = dict()
+PubMedId_core = dict()
 
 
 class Source():

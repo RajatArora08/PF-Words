@@ -76,11 +76,13 @@ def parse_xml(child):
 
     mesh_headings = medical_citation.find('MeshHeadingList')
 
-    data["id"] = pmid.text
+    if title != None:
 
-    if abstract:
-        data['abstract'] = abstract.find('AbstractText').text
+        data["id"] = pmid.text
         data['title'] = title.text
+
+        if abstract:
+            data['abstract'] = abstract.find('AbstractText').text
 
         if mesh_headings:
             mesh_terms_list = []
@@ -131,5 +133,9 @@ def add_pubmed_to_solr():
                 data["title"] = pubmed['title']
 
             SolrOperations.add_to_solr(data)
+
+            #A
+            if any( id == pubmed['id'] for id in variables.PubMedId_core[pf_word]):
+                SolrOperations.add_to_solr_core(data)
 
     return

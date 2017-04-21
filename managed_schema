@@ -1,7 +1,7 @@
 {
   "responseHeader":{
     "status":0,
-    "QTime":1},
+    "QTime":0},
   "schema":{
     "name":"example-data-driven-schema",
     "version":1.6,
@@ -984,7 +984,7 @@
         "name":"source",
         "type":"text_en",
         "multiValued":false,
-        "indexed":false,
+        "indexed":true,
         "stored":true},
       {
         "name":"title",
@@ -1359,9 +1359,6 @@
         "stored":true}],
     "copyFields":[{
         "source":"description",
-        "dest":"_text_"},
-      {
-        "source":"id",
         "dest":"_text_"},
       {
         "source":"mesh_terms",

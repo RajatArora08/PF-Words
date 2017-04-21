@@ -20,7 +20,7 @@ def parse_prosite_dat_file(PF_List):
                 if any(word == pf_word for pf_word in PF_List):
 
                     #Testing only for 'EF_HAND_1'
-                    # if word == 'EF_HAND_1':
+                    if word == 'ZINC_PROTEASE':
 
                         pubmed_list = get_pdb_uniprot_list(input_file)
                         variables.PubMedId[word].update(set(pubmed_list))

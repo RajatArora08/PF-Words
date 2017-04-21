@@ -9,11 +9,14 @@ def static_page(page_name):
     return render_template('%s.html' % page_name)
 
 
-@app.route('/test/prosite')
-def return_search():
+@app.route('/send')
+def send():
     query = request.args['query']
-    option = request.args['option']
-    return jsonify(SolrSearch.search(query, option))
+    option = request.args['options']
+
+    data = SolrSearch.search(query, option)
+    return render_template('result.html', data=data)
+
 
 if __name__ == "__main__":
     app.run()

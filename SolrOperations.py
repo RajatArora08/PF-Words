@@ -2,12 +2,13 @@ import pysolr
 import CONSTANTS
 
 
-def add_to_solr(data, Core=False):
+def add_to_solr(data):
     solr = pysolr.Solr(CONSTANTS.SOLR_URL_TEST, timeout=10)
 
     output_file = open(CONSTANTS.PARSED_FILE, "a")
 
     solr.add([data])
+    print("Added to All Docs")
 
     # Write all solr contents to file too
     # output_file.write("*********** {0} ************\n".format(data["id"]))
@@ -24,9 +25,10 @@ def add_to_solr(data, Core=False):
 
     print("{0}".format(data["id"]))
 
-    if Core:
-        solr_core = pysolr.Solr(CONSTANTS.SOLR_URL_CORE, timeout=10)
-        solr_core.add([data])
-        print("Added to Core Docs")
-
     return
+
+
+def add_to_solr_core(data):
+    solr_core = pysolr.Solr(CONSTANTS.SOLR_URL_CORE, timeout=10)
+    solr_core.add([data])
+    print("Added to Core Docs")
