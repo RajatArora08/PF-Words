@@ -1,3 +1,5 @@
+import json
+
 from PF_To_Be_Tested import PF_List
 import re
 import CONSTANTS
@@ -12,12 +14,16 @@ pattern_skip_line = re.compile(r'^\*\*')
 pattern_end_description = re.compile(r'^-Consensus pattern')
 pattern_end_doc = re.compile(r'^\{END}')
 pattern_pubmedid = re.compile(r'PubMed=([0-9]*)')
+pattern_pd_id = re.compile(r'^\{(PD[A-Z0-9]*)}$')
 
 
 def create_core_docs():
 
     with open(CONSTANTS.PROSITE_FILE, "r", encoding="ISO-8859-1") as file:
         for line in file:
+
+            if re.match(pattern_pd_id, line):
+                pd_code = re.findall(pattern_pd_id, line)[0]
 
             if re.match(pattern_PF_name, line):
                 tup = re.findall(pattern_PF_name, line)[0]
@@ -27,7 +33,7 @@ def create_core_docs():
                 if any(word == pf_word for pf_word in PF_List):
 
                     # Testing only for 'EF_HAND_1'
-                    if word == 'ZINC_PROTEASE':
+                    # if word == 'PROTEIN_KINASE_ST' or word == 'PROTEIN_KINASE_TYR':
 
                         pubmed_set = set()
                         pf_word_list = []
@@ -84,6 +90,7 @@ def create_core_docs():
 
                             variables.PubMedId[temp_word[1]] = pubmed_set
                             variables.PubMedId_core[temp_word[1]] = set(pubmed_set)
+                            variables.PD_Id[temp_word[1]] = pd_code
 
                             formatted_word = CONSTANTS.DOC_FORMAT.format(variables.DOC_ID, temp_word[1])
 
@@ -97,8 +104,23 @@ def create_core_docs():
                             SolrOperations.add_to_solr(data)
                             SolrOperations.add_to_solr_core(data)
 
+    write_pd_to_file()
     file.close()
     return
+
+
+def write_pd_to_file():
+
+    with open(CONSTANTS.PD_CODE_FILE, "w") as file:
+        json.dump(variables.PD_Id, file)
+
+
+def read_pd_from_file():
+
+    with open(CONSTANTS.PD_CODE_FILE, "r") as file:
+        data = json.load(file)
+
+    return data
 
 
 if __name__ == '__main__':

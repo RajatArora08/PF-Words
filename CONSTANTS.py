@@ -6,6 +6,8 @@ PF_TESTED = "/home/rajatar08/PF-Project/PF-Test.txt"
 
 PARSED_FILE = "/home/rajatar08/PF-Project/parsed.txt"
 
+PD_CODE_FILE = "/home/rajatar08/PF-Project/pd_code.txt"
+
 PUBMED_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" \
              "db=pubmed" \
              "&retmode=xml" \

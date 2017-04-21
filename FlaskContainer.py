@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import SolrSearch
+from CoreDocs import read_pd_from_file
 
 app = Flask(__name__)
 
@@ -15,7 +16,8 @@ def send():
     option = request.args['options']
 
     data = SolrSearch.search(query, option)
-    return render_template('result.html', data=data)
+    PD_id = read_pd_from_file()
+    return render_template('result.html', data=data, PD_id=PD_id)
 
 
 if __name__ == "__main__":
