@@ -32,3 +32,9 @@ def add_to_solr_core(data):
     solr_core = pysolr.Solr(CONSTANTS.SOLR_URL_CORE, timeout=10)
     solr_core.add([data])
     print("Added to Core Docs")
+
+
+def add_to_solr_intermediate(data):
+    solr_core = pysolr.Solr(CONSTANTS.SOLR_URL_CORE, timeout=10)
+    solr_core.add([data])
+    print("Added to Intermediate Docs")

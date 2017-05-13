@@ -134,8 +134,8 @@ def add_pubmed_to_solr():
 
             SolrOperations.add_to_solr(data)
 
-            #A
             if any( id == pubmed['id'] for id in variables.PubMedId_core[pf_word]):
                 SolrOperations.add_to_solr_core(data)
+                SolrOperations.add_to_solr_intermediate(data)
 
     return

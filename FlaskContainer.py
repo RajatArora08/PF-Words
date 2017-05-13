@@ -14,11 +14,12 @@ def static_page(page_name):
 def send():
     query = request.args['query']
     option = request.args['options']
+    collection = request.args['collection']
 
-    data = SolrSearch.search(query, option)
+    data = SolrSearch.search(query, option, collection)
     PD_id = read_pd_from_file()
     return render_template('result.html', data=data, PD_id=PD_id)
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
