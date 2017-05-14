@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>PF-Words: Literature powered Search Engine</title>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h2>Literature powered PF-Word Search Engine</h2>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <form method="get" action="/send" id="search-form2">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" name="query">
+                    </div>
+                    <div class="form-group">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked value="1">
+                              Total Scoring
+                          </label>
+                          <label class="btn btn-primary">
+                            <input type="radio" name="options" id="option2" autocomplete="off" value="2">
+                              Count Scoring
+                          </label>
+                          <label class="btn btn-primary">
+                            <input type="radio" name="options" id="option3" autocomplete="off" value="3">
+                              Mean Scoring
+                          </label>
+                          <label class="btn btn-primary">
+                            <input type="radio" name="options" id="option4" autocomplete="off" value="4">
+                              Decay Scoring
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn-group" data-toggle="buttons">
+                          <label class="btn btn-warning active">
+                            <input type="radio" name="collection" id="option5" autocomplete="off" value="1">
+                              Core docs
+                          </label>
+                          <label class="btn btn-warning">
+                            <input type="radio" name="collection" id="option6" autocomplete="off" value="2">
+                              Intermediate Docs
+                          </label>
+                          <label class="btn btn-warning">
+                            <input type="radio" name="collection" id="option7" autocomplete="off" value="3" checked>
+                              All Docs
+                          </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

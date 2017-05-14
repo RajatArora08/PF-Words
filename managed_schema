@@ -979,6 +979,18 @@
         "name":"mesh_terms",
         "type":"text_en",
         "indexed":true,
+        "stored":true},
+      {
+        "name":"source",
+        "type":"text_en",
+        "multiValued":false,
+        "indexed":true,
+        "stored":true},
+      {
+        "name":"title",
+        "type":"text_en",
+        "multiValued":false,
+        "indexed":true,
         "stored":true}],
     "dynamicFields":[{
         "name":"*_txt_en_split_tight",
@@ -1349,8 +1361,8 @@
         "source":"description",
         "dest":"_text_"},
       {
-        "source":"id",
+        "source":"mesh_terms",
         "dest":"_text_"},
       {
-        "source":"mesh_terms",
+        "source":"title",
         "dest":"_text_"}]}}

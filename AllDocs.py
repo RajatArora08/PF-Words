@@ -5,9 +5,10 @@ import CONSTANTS
 import PubMed
 import PDB
 import Uniprot
+import variables
 
 
-def parse_prosite_dat_file(PF_List, doc_id):
+def parse_prosite_dat_file(PF_List):
     pattern_pf_function = re.compile(r'^ID\s\s\s([A-Za-z0-9_]*);')
 
     with open(CONSTANTS.PROSITE_DAT_FILE, "r") as input_file:
@@ -19,20 +20,13 @@ def parse_prosite_dat_file(PF_List, doc_id):
                 if any(word == pf_word for pf_word in PF_List):
 
                     #Testing only for 'EF_HAND_1'
-                    if word == 'EF_HAND_1':
+                    # if word == 'PROTEIN_KINASE_ST' or word == 'PROTEIN_KINASE_TYR':
 
                         pubmed_list = get_pdb_uniprot_list(input_file)
-
-                        doc_id = PubMed.add_pubmed_to_solr(word,
-                                                           pubmed_list,
-                                                           doc_id)
-
-                        # print('{2}. {0}= {1}'.format(word, pdb_list, doc_id))
+                        variables.PubMedId[word].update(set(pubmed_list))
 
 
 def get_pdb_uniprot_list(input_file):
-
-    pubmed_list_combined = []
 
     pdb_list = []
     uniprot_list = []
@@ -61,6 +55,7 @@ def get_pdb_uniprot_list(input_file):
             break
 
     uniprot_pubmed_list = Uniprot.get_uniprot_pubmed_list(uniprot_list)
+
     pdb_pubmed_list = PDB.get_pdb_pubmed_list(pdb_list)
 
     pubmed_list_combined = uniprot_pubmed_list + pdb_pubmed_list
@@ -68,16 +63,16 @@ def get_pdb_uniprot_list(input_file):
     return pubmed_list_combined
 
 
-def create_all_docs(doc_id):
+def create_all_docs():
 
     PF_list = PF_To_Be_Tested.PF_List
-    parse_prosite_dat_file(PF_list, doc_id)
+    parse_prosite_dat_file(PF_list)
+    PubMed.add_pubmed_to_solr()
 
 
 if __name__ == '__main__':
 
-    initial_doc_id = 1
     # Comment for testing only all docs
-    updated_doc_id = CoreDocs.create_core_docs(initial_doc_id)
-    # updated_doc_id = 92
-    create_all_docs(updated_doc_id)
+    CoreDocs.create_core_docs()
+
+    create_all_docs()
