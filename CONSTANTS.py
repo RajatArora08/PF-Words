@@ -1,12 +1,12 @@
-PROSITE_FILE = "/home/rajatar08/PF-Project/prosite.doc"
+PROSITE_FILE = "resources/prosite.doc"
 
-PROSITE_DAT_FILE = "/home/rajatar08/PF-Project/prosite.dat"
+PROSITE_DAT_FILE = "resources/prosite.dat"
 
-PF_TESTED = "/home/rajatar08/PF-Project/PF-Test.txt"
+PF_TESTED = "resources/PF-Test.txt"
 
-PARSED_FILE = "/home/rajatar08/PF-Project/parsed.txt"
+PARSED_FILE = "resources/parsed.txt"
 
-PD_CODE_FILE = "/home/rajatar08/PF-Project/pd_code.txt"
+PD_CODE_FILE = "resources/pd_code.txt"
 
 PUBMED_URL = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" \
              "db=pubmed" \
@@ -35,16 +35,18 @@ DOC_FORMAT = "{0}_{1}"
 
 headers = {'User-Agent': 'rarora@mail.sfsu.edu'}
 
-PDB_DIR = "/home/rajatar08/PF-Project/resources/pdb/{0}.xml"
+PDB_DIR = "resources/data/pdb/{0}.xml"
 
-UNIPROT_DIR = "/home/rajatar08/PF-Project/resources/uniprot/{0}.txt"
+UNIPROT_DIR = "resources/data/uniprot/{0}.txt"
 
-PUBMED_DIR = "/home/rajatar08/PF-Project/resources/pubmed/{0}.xml"
+PUBMED_DIR = "resources/data/pubmed/{0}.xml"
 
-CLASSIFIER_DIR = "/home/rajatar08/PF-Project/classifiers/{0}/"
+CLASSIFIER_DIR_SVM = "resources/classifiers_svm/{0}/"
+CLASSIFIER_DIR_NB = "resources/classifiers_nb/{0}/"
 
 
-CLASSIFIER_FILE = CLASSIFIER_DIR + "{1}.pkl"
-VECTOR_FILE = CLASSIFIER_DIR + "vector.pkl"
+CLASSIFIER_FILE_SVM = CLASSIFIER_DIR_SVM + "{1}.pkl"
+CLASSIFIER_FILE_NB = CLASSIFIER_DIR_NB + "{1}.pkl"
 
-ANALYSIS_CSV_FILE = "/home/rajatar08/PF-Project/Analysis.csv"
+
+ANALYSIS_CSV_FILE = "resources/Analysis.csv"

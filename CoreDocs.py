@@ -101,8 +101,8 @@ def create_core_docs():
 
                             variables.DOC_ID += 1
 
-                            # SolrOperations.add_to_solr(data)
-                            # SolrOperations.add_to_solr_core(data)
+                            SolrOperations.add_to_solr(data)
+                            SolrOperations.add_to_solr_core(data)
                             # SolrOperations.add_to_solr_intermediate(data)
 
     write_pd_to_file()
@@ -127,4 +127,4 @@ def read_pd_from_file():
 if __name__ == '__main__':
 
     create_core_docs()
-    # PubMed.add_pubmed_to_solr()
+    PubMed.add_pubmed_to_solr()
