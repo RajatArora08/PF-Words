@@ -43,6 +43,7 @@ PUBMED_DIR = "/home/rajatar08/PF-Project/resources/pubmed/{0}.xml"
 
 CLASSIFIER_DIR = "/home/rajatar08/PF-Project/classifiers/{0}/"
 
+
 CLASSIFIER_FILE = CLASSIFIER_DIR + "{1}.pkl"
 VECTOR_FILE = CLASSIFIER_DIR + "vector.pkl"
 

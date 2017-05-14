@@ -11,6 +11,7 @@ from itertools import combinations
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
+from sklearn import svm
 import pickle
 import os
 from sklearn.pipeline import Pipeline
@@ -21,8 +22,8 @@ def predict(pf_word, cutoff=None):
     if pf_word == 'ADH_SHORT':
         print('pause')
 
-    CLASSIFIER_CUT_OFF = 7
-    # search_query = "id:308_EF_HAND_1".format(pf_word)
+    CLASSIFIER_CUT_OFF = 9
+    # search_query = "id:5567_IG_MHC".format(pf_word)
 
     search_query = "id:*_{0}".format(pf_word)
     solr = pysolr.Solr(SOLR_URL_TEST, timeout=10)
@@ -41,6 +42,8 @@ def predict(pf_word, cutoff=None):
     # test_vec = vec.fit_transform(test_np_array)
 
     classifier_dir = CLASSIFIER_DIR.format(pf_word)
+    # classifier_dir = "/home/rajatar08/PF-Project/classifiers_nb/{0}/".format(pf_word)
+    # classifier_dir = "/home/rajatar08/PF-Project/classifiers_svm/{0}/".format(pf_word)
 
 
     # Mnb: Multinomial Naive Bayes
@@ -170,6 +173,8 @@ def train_classifier(pf_word_list, input_pf_word=None):
     core_docs_dict = dict()
     for doc in results:
         pf_word = doc.get('id').split('_', 1)[1]
+        if pf_word == 'PROTEIN_KINASE_ST' or pf_word == "PROTEIN_KINASE_TYR":
+            continue
 
         content = doc.get('title') + " " + doc.get('description') if doc.get('description') else doc.get('title')
         core_docs_dict.setdefault(pf_word, []).append(content)
@@ -177,13 +182,24 @@ def train_classifier(pf_word_list, input_pf_word=None):
     # Obtaining combinations of 2 for Classifier
     choosed_list = list(combinations(list(core_docs_dict.keys()), 2))
 
+    # SVM
     pipeline = Pipeline([
         ('vectorizer', TfidfVectorizer(tokenizer=TokenizerStemmer.tokenize,
                                        min_df=1,
                                        stop_words=stopwords.words('english') + list(string.punctuation)
                                        )),
         # ('selector', SelectKBest(score_func=chi2, k=200)),
-        ('classifier', MultinomialNB())])
+        ('classifier', svm.SVC(kernel="linear", probability=True))])
+
+
+    # NB
+    # pipeline = Pipeline([
+    #     ('vectorizer', TfidfVectorizer(tokenizer=TokenizerStemmer.tokenize,
+    #                                    min_df=1,
+    #                                    stop_words=stopwords.words('english') + list(string.punctuation)
+    #                                    )),
+    #     # ('selector', SelectKBest(score_func=chi2, k=200)),
+    #     ('classifier', MultinomialNB())])
 
     # Without CHi2
     # pipeline = Pipeline([
@@ -247,11 +263,13 @@ if __name__ == '__main__':
     pf_words = PF_To_Be_Tested.PF_List
     # train_classifier(pf_words)
 
-    for word in pf_words:
-        predict(word)
+    # for word in pf_words:
+    #     predict(word)
 
     # predict('EF_HAND_1')
-    # predict('ASP_PROTEASE')
+    predict('ADH_SHORT')
+    # predict('IG_MHC')
+
 
     # for pf_word in PF_To_Be_Tested.PF_List:
     #     classify_pf_word(pf_word, train=True)
