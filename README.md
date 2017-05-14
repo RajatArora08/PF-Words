@@ -21,12 +21,18 @@ Following libraries are required:
 
 To run:
 
-1. Compile All Docs and Core Docs:
+1. Run UI
+```
+python3 FlaskContainer
+```
+Go to: http://localhost:5000/test/
+
+2. Compile All Docs and Core Docs:
 ```
 python3 AllDocs.py
 ```
 
-2. Classify documents (Train: SVM, NB | Predict: SVM):
+3. Classify documents (Train: SVM, NB | Predict: SVM):
  ```
  python3 Classification.py
  ```
