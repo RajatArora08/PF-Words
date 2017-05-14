@@ -23,7 +23,7 @@ To run:
 
 1. Run UI
 ```
-python3 FlaskContainer
+python3 FlaskContainer.py
 ```
 Go to: http://localhost:5000/test/
 
